@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <property name="schemaName" value="wellbeingapp_492"></property>
+    <property name="author=" value="db-designer"></property>
+    <changeSet id="v1-01-01" author="${author}">
+    
+ <createTable schemaName="${schemaName}" tableName="Practitioner">
+    <column name="PractitionerId" type="VARCHAR(250)" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="Name" type="VARCHAR(250)" />
+    
+     <column name="Qualification" type="VARCHAR(250)" />
+    
+ 	
+</createTable>
+ <createTable schemaName="${schemaName}" tableName="Appointment">
+    <column name="AppointmentId" type="VARCHAR(250)" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="Date" type="DATE" />
+    
+     <column name="Time" type="VARCHAR(250)" />
+    
+ 	
+</createTable>
+ <createTable schemaName="${schemaName}" tableName="User">
+    <column name="UserId" type="VARCHAR(250)" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="Username" type="VARCHAR(250)" />
+    
+     <column name="Email" type="VARCHAR(250)" />
+    
+ 	
+</createTable>
+ <createTable schemaName="${schemaName}" tableName="Service">
+    <column name="ServiceId" type="VARCHAR(250)" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="Name" type="VARCHAR(250)" />
+    
+     <column name="Description" type="VARCHAR(250)" />
+    
+ 	
+</createTable>
+	
+  <createTable schemaName="${schemaName}" tableName="Serviceslots">
+	<column name="Id" type="SERIAL" autoIncrement="true">
+		<constraints primaryKey="true" nullable="false"/>
+	</column>
+	<column name="ServiceId" type="VARCHAR(250)" />
+	<column name="PractitionerId" type="VARCHAR(250)" />
+</createTable>
+  <createTable schemaName="${schemaName}" tableName="Practitionerbooking">
+	<column name="Id" type="SERIAL" autoIncrement="true">
+		<constraints primaryKey="true" nullable="false"/>
+	</column>
+	<column name="PractitionerId" type="VARCHAR(250)" />
+	<column name="AppointmentId" type="VARCHAR(250)" />
+</createTable>
+
+ 
+	<addForeignKeyConstraint baseTableName="Serviceslots" baseTableSchemaName="${schemaName}"  baseColumnNames="ServiceId" constraintName="Practitioner_ServiceId_fk"
+	                                  referencedTableName="Service" referencedTableSchemaName="${schemaName}" referencedColumnNames="ServiceId"/>
+	                                  
+	<addForeignKeyConstraint baseTableName="Serviceslots" baseTableSchemaName="${schemaName}"  baseColumnNames="PractitionerId" constraintName="Practitioner_PractitionerId_fk"
+	                                  referencedTableName="Practitioner" referencedTableSchemaName="${schemaName}" referencedColumnNames="PractitionerId"/>
+ 
+ 
+	<addForeignKeyConstraint baseTableName="Practitionerbooking" baseTableSchemaName="${schemaName}"  baseColumnNames="PractitionerId" constraintName="Appointment_PractitionerId_fk"
+	                                  referencedTableName="Practitioner" referencedTableSchemaName="${schemaName}" referencedColumnNames="PractitionerId"/>
+	                                  
+	<addForeignKeyConstraint baseTableName="Practitionerbooking" baseTableSchemaName="${schemaName}"  baseColumnNames="AppointmentId" constraintName="Appointment_AppointmentId_fk"
+	                                  referencedTableName="Appointment" referencedTableSchemaName="${schemaName}" referencedColumnNames="AppointmentId"/>
+ 
+	
+  
+	<addColumn tableName="Appointment" schemaName="${schemaName}">
+	    <column name="Appointmentservices" type="VARCHAR(250)"/>
+	</addColumn>
+	<addForeignKeyConstraint baseTableName="Appointment" baseColumnNames="Appointmentservices" baseTableSchemaName="${schemaName}" constraintName="Appointment_services_fk" referencedTableName="User"
+	                                 referencedColumnNames="UserId" referencedTableSchemaName="${schemaName}"/>
+ 
+  	    </changeSet>
+</databaseChangeLog>
